@@ -1,0 +1,66 @@
+package com.inventory.productservice.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.inventory.productservice.service.ProductService;
+
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+	
+	@Value("${message}")
+	String message;
+	
+	@Autowired
+	private ProductService productService;
+	
+	@GetMapping
+	public List<Product> getAllProducts() {
+		return productService.getProducts();
+	}
+	
+	@GetMapping("/get")
+	public String getProducts1() {
+		return productService.getAppointment();
+	}
+	
+	@PostMapping
+	public Product createProduct(@RequestBody Product product) {
+		return productService.createProduct(product);
+	}
+	
+	@PutMapping("/{id}")
+	public Product updateProduct(@RequestBody Product product, @PathVariable Long id) {
+		return productService.updateProduct(product, id);
+	}
+	
+	@GetMapping("/{id}")
+	public Product getProduct(@PathVariable Long id) {
+	    return productService.getProduct(id);
+	}
+	
+	@PostMapping("/{productId}/reserve")
+	public ProductReserveResponse reserveStock(@PathVariable Long productId, @RequestBody ReserveStockRequest request) {
+		return productService.reserveStock(productId, request.quantity());
+	}
+	
+	@PostMapping("/{productId}/restore")
+    public StockRestoreResult restoreStock(
+            @PathVariable Long productId,
+            @RequestBody RestoreStockRequest request) {
+
+        return productService.restoreStock(productId, request.quantity());
+    }
+
+
+}

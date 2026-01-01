@@ -1,0 +1,3 @@
+com\inventory\gateway\security\JwtAuthFilter.class
+com\inventory\gateway\security\JwtUtil.class
+com\inventory\gateway\ApiGatewayApplication.class
