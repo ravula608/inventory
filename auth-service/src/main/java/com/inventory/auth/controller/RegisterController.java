@@ -2,8 +2,10 @@ package com.inventory.auth.controller;
 
 import java.util.Optional;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
+@Validated
 public class RegisterController {
 
     @Autowired
@@ -27,7 +30,7 @@ public class RegisterController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public RegisterResponse register(@RequestBody RegisterRequest request) {
+    public RegisterResponse register(@Valid @RequestBody RegisterRequest request) {
     	log.info("Register API starting");
     	
         if ( userRepository.findByUsername(request.username()).isPresent()) {
