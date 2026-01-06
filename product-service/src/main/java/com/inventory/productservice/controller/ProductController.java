@@ -2,6 +2,7 @@ package com.inventory.productservice.controller;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.inventory.productservice.service.ProductService;
 
+@Slf4j
 @RestController
 @RequestMapping("/products")
 public class ProductController {
@@ -34,7 +36,7 @@ public class ProductController {
 		return productService.getAppointment();
 	}
 	
-	@PostMapping
+	@PostMapping("/admin")
 	public Product createProduct(@RequestBody Product product) {
 		return productService.createProduct(product);
 	}
@@ -50,13 +52,14 @@ public class ProductController {
 	}
 	
 	@PostMapping("/{productId}/reserve")
-	public ProductReserveResponse reserveStock(@PathVariable Long productId, @RequestBody ReserveStockRequest request) {
+	public ProductReserveResponse reserveStock(@PathVariable("productId") Long productId, @RequestBody ReserveStockRequest request) {
+		log.info("Reserving stock for productId: {}, quantity: {}", productId, request.quantity());
 		return productService.reserveStock(productId, request.quantity());
 	}
 	
 	@PostMapping("/{productId}/restore")
     public StockRestoreResult restoreStock(
-            @PathVariable Long productId,
+            @PathVariable("productId") Long productId,
             @RequestBody RestoreStockRequest request) {
 
         return productService.restoreStock(productId, request.quantity());

@@ -55,7 +55,7 @@ public class JwtAuthFilter implements GlobalFilter {
         String role = claims.get("role", String.class);
 
         // 🔐 ROLE RULES
-        if (path.startsWith("/admin") && !"ADMIN".equals(role)) {
+        if (path.contains("/admin") && !"ADMIN".equals(role)) {
             exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
             return exchange.getResponse().setComplete();
         }
