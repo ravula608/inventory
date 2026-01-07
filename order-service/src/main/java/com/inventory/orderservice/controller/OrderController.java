@@ -2,6 +2,8 @@ package com.inventory.orderservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,8 +27,7 @@ public class OrderController {
 	
 	@GetMapping()
 	public String getOrderDetails() {
-		String s = orderService.getOrders();
-		return s;
+		return orderService.getOrders();
 	}
 	
 	@GetMapping("/get")
@@ -35,12 +36,13 @@ public class OrderController {
 	}
 
 	@PostMapping
-    public Order createOrder(
+    public ResponseEntity<Order> createOrder(
             @RequestHeader("X-User-Id") Long userId,
             @RequestBody CreateOrderRequest request) {
 		log.info("Create order started");
 
-        return orderService.createOrder(userId, request);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(orderService.createOrder(userId, request));
     }
 	
 	@PostMapping("/{orderId}/cancel")

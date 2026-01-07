@@ -3,6 +3,8 @@ package com.inventory.auth.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +30,7 @@ public class RegisterController {
 	private PasswordEncoder passwordEncoder;
 
 	@PostMapping("/register")
-	public RegisterResponse register(@Valid @RequestBody RegisterRequest request) {
+	public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
 		log.info("Register API starting");
 
 		if (userRepository.findByUsername(request.username()).isPresent()) {
@@ -45,7 +47,8 @@ public class RegisterController {
 
 		userRepository.save(user);
 		log.info("User registered successfully for {}", request.username());
-		return new RegisterResponse(user.getUserId(), user.getUsername(), user.getRole(),
+        RegisterResponse registerResponse = new RegisterResponse(user.getUserId(), user.getUsername(), user.getRole(),
 				"User registered successfully");
+        return  ResponseEntity.status(HttpStatus.CREATED).body(registerResponse);
 	}
 }
