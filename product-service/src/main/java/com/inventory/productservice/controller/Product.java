@@ -41,6 +41,7 @@ public class Product {
     private int availableQuantity;
 
     @Column(nullable = false)
+    @Builder.Default
     private boolean active = true;
     
     @CreationTimestamp

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.inventory.productservice.service.ProductService;
 
+import jakarta.validation.Valid;
+
 @Slf4j
 @RestController
 @RequestMapping("/products")
@@ -37,7 +39,7 @@ public class ProductController {
 	}
 	
 	@PostMapping("/admin")
-	public Product createProduct(@RequestBody Product product) {
+	public Product createProduct(@Valid @RequestBody Product product) {
 		return productService.createProduct(product);
 	}
 	
