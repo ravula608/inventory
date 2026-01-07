@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
-@Validated
 public class RegisterController {
 
     @Autowired

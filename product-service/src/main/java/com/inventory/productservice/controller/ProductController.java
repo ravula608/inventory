@@ -2,6 +2,7 @@ package com.inventory.productservice.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +38,7 @@ public class ProductController {
 	}
 	
 	@PostMapping("/admin")
-	public Product createProduct(@RequestBody Product product) {
+	public Product createProduct(@Valid @RequestBody Product product) {
 		return productService.createProduct(product);
 	}
 	
