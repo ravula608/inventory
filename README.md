@@ -75,27 +75,33 @@ spring:
 1️⃣ Start Infrastructure Services
 # Config Server
 cd config-server
+
 mvn spring-boot:run
 
 # Eureka Server
 cd eureka-server
+
 mvn spring-boot:run
 
 2️⃣ Start Core Services
 # Auth Service
 cd auth-service
+
 mvn spring-boot:run
 
 # Product Service
 cd product-service
+
 mvn spring-boot:run
 
 # Order Service
 cd order-service
+
 mvn spring-boot:run
 
 3️⃣ Start API Gateway
 cd api-gateway
+
 mvn spring-boot:run
 
 🌐 Service Ports (Default)
@@ -103,9 +109,9 @@ Service	Port
 Config Server	8888
 Eureka Server	8761
 API Gateway	8090
-Auth Service	8081
+Auth Service	9000
 Order Service	8082
-Product Service	8083
+Product Service	8081
 
 🧪 API Documentation (Swagger)
 -------------------------------
