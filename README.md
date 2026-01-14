@@ -6,20 +6,15 @@ A Spring Boot–based Inventory Management System built using microservices arch
 
 Components
 ----------
-Service	        Description
--------         -----------
+Service	               Description
+-------                -----------
 
-API Gateway	    Entry point for all client requests
-
-Config Server	Centralized external configuration
-
-Eureka Server	Service discovery and registration
-
-Auth Service	Authentication & JWT token generation
-
-Order Service	Order creation and management
-
-Product Service	Product catalog and inventory
+API Gateway	           Entry point for all client requests
+Config Server	       Centralized external configuration
+Eureka Server	       Service discovery and registration
+Auth Service	       Authentication & JWT token generation
+Order Service	       Order creation and management
+Product Service	       Product catalog and inventory
 
 🧰 Tech Stack
 -------------
