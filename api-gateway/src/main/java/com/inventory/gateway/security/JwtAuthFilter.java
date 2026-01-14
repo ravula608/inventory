@@ -1,11 +1,14 @@
 
 package com.inventory.gateway.security;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
@@ -47,9 +50,39 @@ public class JwtAuthFilter implements GlobalFilter {
         Claims claims;
         try {
             claims = jwtUtil.validateToken(authHeader.substring(7));
-        } catch (Exception e) {
+        } catch (ExpiredJwtException e) {
+
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-            return exchange.getResponse().setComplete();
+            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+
+            byte[] body = """
+                    {
+                      "error": "TOKEN_EXPIRED",
+                      "message": "JWT token has expired"
+                    }
+                    """.getBytes();
+
+            return exchange.getResponse()
+                    .writeWith(Mono.just(exchange.getResponse()
+                            .bufferFactory()
+                            .wrap(body)));
+
+        } catch (JwtException | IllegalArgumentException e) {
+
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
+
+            byte[] body = """
+                    {
+                      "error": "INVALID_TOKEN",
+                      "message": "JWT token is invalid"
+                    }
+                    """.getBytes();
+
+            return exchange.getResponse()
+                    .writeWith(Mono.just(exchange.getResponse()
+                            .bufferFactory()
+                            .wrap(body)));
         }
 
         String role = claims.get("role", String.class);

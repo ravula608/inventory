@@ -2,16 +2,16 @@ package com.inventory.orderservice;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@Disabled("Temporarily disabled")
+//@Disabled("Temporarily disabled")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@ActiveProfiles("test")
 public class OrderserviceApplicationTest {
 
     @Test
-    void main_runsWithoutException() {
-        // Prevent Eureka client from trying to contact a server during test
-        System.setProperty("eureka.client.enabled", "false");
-        System.setProperty("spring.cloud.discovery.enabled", "false");
-
-        OrderserviceApplication.main(new String[]{});
+    void contextLoads() {
+        // If context starts, test passes
     }
 }

@@ -2,6 +2,7 @@ package com.inventory.productservice.controller;
 
 import java.util.List;
 
+import io.micrometer.observation.annotation.Observed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.inventory.productservice.service.ProductService;
 
 import jakarta.validation.Valid;
+
 
 @Slf4j
 @RestController
@@ -52,7 +54,9 @@ public class ProductController {
 	}
 	
 	@GetMapping("/{id}")
+    @Observed(name = "getProduct-service", contextualName = "getProduct-controller")
 	public Product getProduct(@PathVariable Long id) {
+        log.info("Fetching product with id: {}", id);
 	    return productService.getProduct(id);
 	}
 	
@@ -63,9 +67,11 @@ public class ProductController {
 	}
 	
 	@PostMapping("/{productId}/restore")
+    @Observed(name = "restoreStock-service", contextualName = "restoreStock-controller")
     public StockRestoreResult restoreStock(
             @PathVariable("productId") Long productId,
             @RequestBody RestoreStockRequest request) {
+        log.info("cancel stock called: productid={}", productId);
 
         return productService.restoreStock(productId, request.quantity());
     }

@@ -1,5 +1,6 @@
 package com.inventory.orderservice.controller;
 
+import io.micrometer.observation.annotation.Observed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ public class OrderController {
 	}
 
 	@PostMapping
+    @Observed(name = "createOrder-service", contextualName = "createOrder-controller")
     public ResponseEntity<Order> createOrder(
             @RequestHeader("X-User-Id") Long userId,
             @RequestBody CreateOrderRequest request) {
@@ -46,6 +48,7 @@ public class OrderController {
     }
 	
 	@PostMapping("/{orderId}/cancel")
+    @Observed(name = "cancelOrder-service", contextualName = "cancelOrder-controller")
     public StockRestoreResult cancelOrder(
             @PathVariable Long orderId,
             @RequestHeader("X-User-Id") Long userId,

@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,10 +59,11 @@ public class OrderControllerTest {
 
         when(orderService.createOrder(eq(5L), any(CreateOrderRequest.class))).thenReturn(created);
 
-        Order result = controller.createOrder(5L, req);
+        ResponseEntity<Order> response = controller.createOrder(5L, req);
 
-        assertEquals(created, result);
-        verify(orderService).createOrder(eq(5L), any(CreateOrderRequest.class));
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(created, response.getBody());
+
     }
 
     @Test
